@@ -1,5 +1,10 @@
 // This java program creates a game of blackjack. This is a one player game between the dealer and the one player only.
-// Jasmitha Allu, Warsame Aswaid, Param Patel, Avi Bandi
+
+
+// Ask Hamre if it EXPLICITLY has to be two diff arguments even though it will run different sections every time.
+// INTEGRATE A TWO PLAYER FEATURE OF NEEDED INTO THE CODE IF NEEDED FOR CSP FINAL TO HAVE TWO FUNCTION CALLS
+// THIS WOULD BE FOR THE TAKE_BET FUNCTION TO BE ABLE TO PASS IN TWO DIFFERENT PARAMENTERS
+
 
 // Imports modules
 import javax.sound.sampled.AudioSystem;
