@@ -7,9 +7,7 @@
 
 
 // Imports modules
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import java.io.File;
+
 import java.util.*;
 
 
@@ -18,12 +16,6 @@ public class Main {
     public static void main(String[] args) {
         // Scanner allows user to enter input.
         Scanner reader = new Scanner(System.in);
-        // Initiates a sound class in which we can play sound
-        Sound soundSpeaker = new Sound();
-
-        // Sound files imported.
-        File winSound = new File("mixkit-winning-chimes-2015.wav");
-        File loseSound = new File("mixkit-retro-arcade-game-over-470.wav");
 
         // Welcome message
         System.out.println("Welcome to BlackJack! Get as close to 21 without going over!\n" +
@@ -64,7 +56,6 @@ public class Main {
                 if (player_hand.totalHandvalue > 21) {
                     System.out.println("Player busts!");
                     player_chips.lose_bet();
-                    soundSpeaker.PlaySound(loseSound);
                     break;
                 }
             }
@@ -88,19 +79,16 @@ public class Main {
                 if (dealer_hand.totalHandvalue > 21) {
                     System.out.println("Dealer Busts!");
                     player_chips.win_bet();
-                    soundSpeaker.PlaySound(winSound);
                 }
                 // Else if both don't bust and dealer value is greater than player value. The dealer will be victorious
                 else if (dealer_hand.totalHandvalue > player_hand.totalHandvalue) {
                     System.out.println("Dealer Wins!");
                     player_chips.lose_bet();
-                    soundSpeaker.PlaySound(loseSound);
                 }
                 // Else if both don't bust and player value is greater than dealer value. The player will be victorious.
                 else if (player_hand.totalHandvalue > dealer_hand.totalHandvalue) {
                     System.out.println("Player Wins");
                     player_chips.win_bet();
-                    soundSpeaker.PlaySound(winSound);
                 }
                 // Else if there is a tie. Both player values are same.
                 else {
@@ -112,7 +100,6 @@ public class Main {
             // If player has lost all chips. He has lost completely Game will exit after sorry statement.
             if (player_chips.total_chips == 0){
                 System.out.println("You have no more chips to bet. You have completely lost the game.");
-                soundSpeaker.PlaySound(loseSound);
                 break;
             }
             // Allows the player to play again with the updated chip count. This uses error checking.
@@ -322,25 +309,3 @@ class Chips{
         bet = 0;
     }
 }
-
-//class that will play an audio file for winning or losing depending on the result
-class Sound {
-    // plays the sound with the audio file passed as a parameter.
-    public void PlaySound(File Audio) {
-
-        try{
-            //creates instance of clip
-            Clip clip= AudioSystem.getClip();
-            //opens the audio file given through parameter
-            clip.open(AudioSystem.getAudioInputStream(Audio));
-            //starts playing the audio
-            clip.start();
-            //puts audio to sleep for a duration of time
-            Thread.sleep(clip.getMicrosecondLength()/1000);
-
-        } catch (Exception e) {
-
-        }
-    }
-}
-
