@@ -103,6 +103,12 @@ public class Main {
                     System.out.println("There was a tie. No chips will be lost or won.");
                 }
             }
+            if (player1_chips.total_chips==0){
+                System.out.println("PLAYER ONE HAS ZERO CHIPS NOW");
+                System.out.println("Player two automatically wins!");
+                break;
+            }
+
             // Shows player their new chip count.
             System.out.println("\n Player's 1 total current chip count at: "+player1_chips.total_chips);
             // If player has lost all chips. He has lost completely Game will exit after sorry statement.
@@ -180,14 +186,20 @@ public class Main {
                     System.out.println("There was a tie. No chips will be lost or won.");
                 }
             }
+
+            if (player2_chips.total_chips==0){
+                System.out.println("PLAYER TWO HAS ZERO CHIPS NOW");
+                System.out.println("Player one automatically wins!");
+                break;
+            }
             // Shows player their new chip count.
-            System.out.println("\n Player's 2 total current chip count at: "+player1_chips.total_chips);
+            System.out.println("\n Player's 2 total current chip count at: "+player2_chips.total_chips);
 
             System.out.println("---------------------------------------------------------");
             System.out.println("Player 1 chips: "+ player1_chips.total_chips);
-            System.out.println("Player 2 chips: "+ player1_chips.total_chips);
+            System.out.println("Player 2 chips: "+ player2_chips.total_chips);
             System.out.println("--------------------------------------------------------");
-            
+
             // Allows the player to play again with the updated chip count. This uses error checking.
             String new_game;
             while (true){
@@ -208,7 +220,7 @@ public class Main {
             }
             // Else if they don't want to keep playing, the loop will break.
             else if (new_game.equals("n")){
-                
+
                 if (player1_chips.total_chips> player2_chips.total_chips) {
                     System.out.println("Player 1 won with the chips amount of: " + player1_chips.total_chips);
                     System.out.println("Player 2 lost with the chips amount of: "+player2_chips.total_chips);
@@ -219,14 +231,14 @@ public class Main {
                 }
                 else if (player1_chips.total_chips==player2_chips.total_chips)
                     System.out.println("Both player 1 and player 2 tied with the chips amount of: "+player2_chips.total_chips);
-                
+
                 System.out.println("Thanks for playing!");
                 break;
             }
         }
     }
 
-    
+
     // Used to show the player updates to their own hand throughout the game.
     // Following shows one of the dealer's cards and all of the player's cards.
     public static void show_some(Hand player, Hand dealer){
