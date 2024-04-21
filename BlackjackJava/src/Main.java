@@ -1,15 +1,7 @@
-// This java program creates a game of blackjack. This is a one player game between the dealer and the one player only.
-
-
-// Ask Hamre if it EXPLICITLY has to be two diff arguments even though it will run different sections every time.
-// INTEGRATE A TWO PLAYER FEATURE OF NEEDED INTO THE CODE IF NEEDED FOR CSP FINAL TO HAVE TWO FUNCTION CALLS
-// THIS WOULD BE FOR THE TAKE_BET FUNCTION TO BE ABLE TO PASS IN TWO DIFFERENT PARAMENTERS
-
+// This java program creates a game of blackjack.
+// This Blackjack game is between two players who take turns playing against the dealer.
 
 // Imports modules
-
-import java.security.KeyStore;
-import java.sql.SQLOutput;
 import java.util.*;
 
 
@@ -19,22 +11,17 @@ public class Main {
         // Scanner allows user to enter input.
         Scanner reader = new Scanner(System.in);
 
-
         // Welcome message
         System.out.println("Welcome to Blackjack! In this game player 1 and player 2 will take turns playing the dealer. ");
         System.out.println("Get as close to 21 without going over!\nDealer will hit until they reach 17 or more. ");
         System.out.println("Try to get as many chips as you can!! No max chips.\nHowever, try not to go bankrupt with zero chips, or else you will lose. ");
         System.out.println("Try to always get more chips than the other player! ");
-//        System.out.println("Welcome to BlackJack! Get as close to 21 without going over!\n" +
-//                " Dealer will hit until they reach 17 or more.");
-//        System.out.println("Try to get as many chips as you can!!! No max chips.\n" +
-//                " However try not to go bankrupt with zero chips. Or else you will lose.");
 
         // Initiates player chips of Chips class.
         Chips player1_chips = new Chips();
-
         Chips player2_chips = new Chips();
-        // This is practically the game play. If the player loses all chips this will break or if they decide not to keep playing.
+
+        // This is practically the game play. It will keep continuing until a player hits zero chips or someone ends the game!
         while (true){
 
             System.out.println("--------------------------------------------------------------------");
@@ -121,9 +108,9 @@ public class Main {
             System.out.println("\n Player's 1 total current chip count at: "+player1_chips.total_chips);
             // If player has lost all chips. He has lost completely Game will exit after sorry statement.
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Player two code    // Player two code      // Player two code   // Player two code    // Player two code
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Player two code    // Player two code      // Player two code   // Player two code    // Player two code
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             System.out.println("--------------------------------------------------------------------");
             System.out.println("PLAYER 2");
@@ -153,6 +140,7 @@ public class Main {
                 hit_or_stand(deck, player2_hand);
                 // After each "hit" or "stand" the player makes. It shows them the updated cards of their hand.
                 // And again one of card's in the dealer's hand.
+
                 show_some(player2_hand, dealer_hand);
                 // If they hit and go over 21 they automatically lose.
                 if (player2_hand.totalHandvalue > 21) {
