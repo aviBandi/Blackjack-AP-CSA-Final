@@ -1,10 +1,7 @@
-// This java program creates a game of blackjack. This is a one player game between the dealer and the one player only.
-// Jasmitha Allu, Warsame Aswaid, Param Patel, Avi Bandi
+// This java program creates a game of blackjack.
+// This Blackjack game is between two players who take turns playing against the dealer.
 
 // Imports modules
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import java.io.File;
 import java.util.*;
 
 
@@ -13,31 +10,33 @@ public class Main {
     public static void main(String[] args) {
         // Scanner allows user to enter input.
         Scanner reader = new Scanner(System.in);
-        // Initiates a sound class in which we can play sound
-        Sound soundSpeaker = new Sound();
-
-        // Sound files imported.
-        File winSound = new File("mixkit-winning-chimes-2015.wav");
-        File loseSound = new File("mixkit-retro-arcade-game-over-470.wav");
 
         // Welcome message
-        System.out.println("Welcome to BlackJack! Get as close to 21 without going over!\n" +
-                " Dealer will hit until they reach 17 or more.");
-        System.out.println("Try to get as many chips as you can!!! No max chips.\n" +
-                " However try not to go bankrupt with zero chips. Or else you will lose.");
+        System.out.println("Welcome to Blackjack! In this game player 1 and player 2 will take turns playing the dealer. ");
+        System.out.println("Get as close to 21 without going over!\nDealer will hit until they reach 17 or more. ");
+        System.out.println("Try to get as many chips as you can!! No max chips.\nHowever, try not to go bankrupt with zero chips, or else you will lose. ");
+        System.out.println("Try to always get more chips than the other player! ");
 
         // Initiates player chips of Chips class.
-        Chips player_chips = new Chips();
-        // This is practically the game play. If the player loses all chips this will break or if they decide not to keep playing.
+        Chips player1_chips = new Chips();
+        Chips player2_chips = new Chips();
+
+        // This is practically the game play. It will keep continuing until a player hits zero chips or someone ends the game!
         while (true){
+
+            System.out.println("--------------------------------------------------------------------");
+            System.out.println("PLAYER 1");
+            System.out.println("YOUR TURN NOW!");
+            System.out.println("---------------------------------------------------------------------");
+
             // Initiates playing deck in the game and shuffles the deck.
             Deck deck = new Deck();
             deck.shuffle();
 
             // Initiates player hand object of Hand class and deals them two cards from deck.
-            Hand player_hand = new Hand();
-            player_hand.add_card((ArrayList) deck.deal());
-            player_hand.add_card((ArrayList) deck.deal());
+            Hand player1_hand = new Hand();
+            player1_hand.add_card((ArrayList) deck.deal());
+            player1_hand.add_card((ArrayList) deck.deal());
 
             // Initiates dealer hand object of Hand class and deals them two cards from deck.
             Hand dealer_hand = new Hand();
@@ -45,26 +44,26 @@ public class Main {
             dealer_hand.add_card((ArrayList) deck.deal());
 
             // Takes bet of player
-            player_chips.bet = take_bet(player_chips);
+            player1_chips.bet = take_bet(player1_chips);
             // Shows player one of the dealer's cards and all of their own cards.
-            show_some(player_hand, dealer_hand);
+            show_some(player1_hand, dealer_hand);
             // Allows the player to keep hitting until they choose to stand.
             while (ReferencePlaying.playing == true) {
                 // Allows player to make their decision
-                hit_or_stand(deck, player_hand);
+                hit_or_stand(deck, player1_hand);
                 // After each "hit" or "stand" the player makes. It shows them the updated cards of their hand.
                 // And again one of card's in the dealer's hand.
-                show_some(player_hand, dealer_hand);
+                show_some(player1_hand, dealer_hand);
                 // If they hit and go over 21 they automatically lose.
-                if (player_hand.totalHandvalue > 21) {
+                if (player1_hand.totalHandvalue > 21) {
                     System.out.println("Player busts!");
-                    player_chips.lose_bet();
-                    soundSpeaker.PlaySound(loseSound);
+                    player1_chips.lose_bet();
                     break;
                 }
             }
+            ReferencePlaying.playing = true;
             // If player does not bust and stands before they bust the following will run.
-            if (player_hand.totalHandvalue <= 21) {
+            if (player1_hand.totalHandvalue <= 21) {
                 // Dealer keeps hitting and drawing a card until he is above 17.
                 while (dealer_hand.totalHandvalue < 17) {
                     dealer_hand.add_card((ArrayList) deck.deal());
@@ -75,41 +74,133 @@ public class Main {
                 System.out.println(dealer_hand.cards);
                 System.out.println("Dealer's total cards' value is: " + dealer_hand.totalHandvalue);
                 System.out.println("\n Player's Hand: ");
-                System.out.println(player_hand.cards);
-                System.out.println("Player's total cards' value is: " + player_hand.totalHandvalue);
+                System.out.println(player1_hand.cards);
+                System.out.println("Player's total cards' value is: " + player1_hand.totalHandvalue);
                 System.out.println("-----------------------");
 
                 // If dealer busts the following will run
                 if (dealer_hand.totalHandvalue > 21) {
                     System.out.println("Dealer Busts!");
-                    player_chips.win_bet();
-                    soundSpeaker.PlaySound(winSound);
+                    player1_chips.win_bet();
                 }
                 // Else if both don't bust and dealer value is greater than player value. The dealer will be victorious
-                else if (dealer_hand.totalHandvalue > player_hand.totalHandvalue) {
+                else if (dealer_hand.totalHandvalue > player1_hand.totalHandvalue) {
                     System.out.println("Dealer Wins!");
-                    player_chips.lose_bet();
-                    soundSpeaker.PlaySound(loseSound);
+                    player1_chips.lose_bet();
                 }
                 // Else if both don't bust and player value is greater than dealer value. The player will be victorious.
-                else if (player_hand.totalHandvalue > dealer_hand.totalHandvalue) {
+                else if (player1_hand.totalHandvalue > dealer_hand.totalHandvalue) {
                     System.out.println("Player Wins");
-                    player_chips.win_bet();
-                    soundSpeaker.PlaySound(winSound);
+                    player1_chips.win_bet();
                 }
                 // Else if there is a tie. Both player values are same.
                 else {
                     System.out.println("There was a tie. No chips will be lost or won.");
                 }
             }
-            // Shows player their new chip count.
-            System.out.println("\n Player's total current chip count at: "+player_chips.total_chips);
-            // If player has lost all chips. He has lost completely Game will exit after sorry statement.
-            if (player_chips.total_chips == 0){
-                System.out.println("You have no more chips to bet. You have completely lost the game.");
-                soundSpeaker.PlaySound(loseSound);
+            if (player1_chips.total_chips==0){
+                System.out.println("PLAYER ONE HAS ZERO CHIPS NOW");
+                System.out.println("Player two automatically wins!");
                 break;
             }
+
+            // Shows player their new chip count.
+            System.out.println("\n Player's 1 total current chip count at: "+player1_chips.total_chips);
+            // If player has lost all chips. He has lost completely Game will exit after sorry statement.
+
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Player two code    // Player two code      // Player two code   // Player two code    // Player two code
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            System.out.println("--------------------------------------------------------------------");
+            System.out.println("PLAYER 2");
+            System.out.println("---------------------------------------------------------------------");
+
+            // Initiates playing deck in the game and shuffles the deck.
+            deck = new Deck();
+            deck.shuffle();
+
+            // Initiates player hand object of Hand class and deals them two cards from deck.
+            Hand player2_hand = new Hand();
+            player2_hand.add_card((ArrayList) deck.deal());
+            player2_hand.add_card((ArrayList) deck.deal());
+
+            // Initiates dealer hand object of Hand class and deals them two cards from deck.
+            dealer_hand = new Hand();
+            dealer_hand.add_card((ArrayList) deck.deal());
+            dealer_hand.add_card((ArrayList) deck.deal());
+
+            // Takes bet of player
+            player2_chips.bet = take_bet(player2_chips);
+            // Shows player one of the dealer's cards and all of their own cards.
+            show_some(player2_hand, dealer_hand);
+            // Allows the player to keep hitting until they choose to stand.
+            while (ReferencePlaying.playing == true) {
+                // Allows player to make their decision
+                hit_or_stand(deck, player2_hand);
+                // After each "hit" or "stand" the player makes. It shows them the updated cards of their hand.
+                // And again one of card's in the dealer's hand.
+
+                show_some(player2_hand, dealer_hand);
+                // If they hit and go over 21 they automatically lose.
+                if (player2_hand.totalHandvalue > 21) {
+                    System.out.println("Player 2 busts!");
+                    player2_chips.lose_bet();
+                    break;
+                }
+            }
+            ReferencePlaying.playing = true;
+
+            // If player does not bust and stands before they bust the following will run.
+            if (player2_hand.totalHandvalue <= 21) {
+                // Dealer keeps hitting and drawing a card until he is above 17.
+                while (dealer_hand.totalHandvalue < 17) {
+                    dealer_hand.add_card((ArrayList) deck.deal());
+                }
+                // Shows all the cards to the player as now the game is done.
+                System.out.println("-----------------------");
+                System.out.println("\n Dealer's Hand: ");
+                System.out.println(dealer_hand.cards);
+                System.out.println("Dealer's total cards' value is: " + dealer_hand.totalHandvalue);
+                System.out.println("\n Player's Hand: ");
+                System.out.println(player2_hand.cards);
+                System.out.println("Player's total cards' value is: " + player2_hand.totalHandvalue);
+                System.out.println("-----------------------");
+
+                // If dealer busts the following will run
+                if (dealer_hand.totalHandvalue > 21) {
+                    System.out.println("Dealer Busts!");
+                    player2_chips.win_bet();
+                }
+                // Else if both don't bust and dealer value is greater than player value. The dealer will be victorious
+                else if (dealer_hand.totalHandvalue > player2_hand.totalHandvalue) {
+                    System.out.println("Dealer Wins!");
+                    player2_chips.lose_bet();
+                }
+                // Else if both don't bust and player value is greater than dealer value. The player will be victorious.
+                else if (player2_hand.totalHandvalue > dealer_hand.totalHandvalue) {
+                    System.out.println("Player Wins");
+                    player2_chips.win_bet();
+                }
+                // Else if there is a tie. Both player values are same.
+                else {
+                    System.out.println("There was a tie. No chips will be lost or won.");
+                }
+            }
+
+            if (player2_chips.total_chips==0){
+                System.out.println("PLAYER TWO HAS ZERO CHIPS NOW");
+                System.out.println("Player one automatically wins!");
+                break;
+            }
+            // Shows player their new chip count.
+            System.out.println("\n Player's 2 total current chip count at: "+player2_chips.total_chips);
+
+            System.out.println("---------------------------------------------------------");
+            System.out.println("Player 1 chips: "+ player1_chips.total_chips);
+            System.out.println("Player 2 chips: "+ player2_chips.total_chips);
+            System.out.println("--------------------------------------------------------");
+
             // Allows the player to play again with the updated chip count. This uses error checking.
             String new_game;
             while (true){
@@ -130,12 +221,24 @@ public class Main {
             }
             // Else if they don't want to keep playing, the loop will break.
             else if (new_game.equals("n")){
+
+                if (player1_chips.total_chips> player2_chips.total_chips) {
+                    System.out.println("Player 1 won with the chips amount of: " + player1_chips.total_chips);
+                    System.out.println("Player 2 lost with the chips amount of: "+player2_chips.total_chips);
+                }
+                else if (player2_chips.total_chips> player1_chips.total_chips) {
+                    System.out.println("Player 2 won with the chips amount of: " + player2_chips.total_chips);
+                    System.out.println("Player 1 lost with the chips amount of: "+player1_chips.total_chips);
+                }
+                else if (player1_chips.total_chips==player2_chips.total_chips)
+                    System.out.println("Both player 1 and player 2 tied with the chips amount of: "+player2_chips.total_chips);
+
                 System.out.println("Thanks for playing!");
                 break;
             }
-
         }
     }
+
 
     // Used to show the player updates to their own hand throughout the game.
     // Following shows one of the dealer's cards and all of the player's cards.
@@ -317,25 +420,3 @@ class Chips{
         bet = 0;
     }
 }
-
-//class that will play an audio file for winning or losing depending on the result
-class Sound {
-    // plays the sound with the audio file passed as a parameter.
-    public void PlaySound(File Audio) {
-
-        try{
-            //creates instance of clip
-            Clip clip= AudioSystem.getClip();
-            //opens the audio file given through parameter
-            clip.open(AudioSystem.getAudioInputStream(Audio));
-            //starts playing the audio
-            clip.start();
-            //puts audio to sleep for a duration of time
-            Thread.sleep(clip.getMicrosecondLength()/1000);
-
-        } catch (Exception e) {
-
-        }
-    }
-}
-
